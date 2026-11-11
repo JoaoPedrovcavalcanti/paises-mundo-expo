@@ -1,45 +1,35 @@
-import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { Card, IconButton, Text } from 'react-native-paper';
 
-export default function CartaoPais({ pais }) {
-  const [aberto, setAberto] = useState(false);
-
+export default function CartaoPais({ pais, favorito, onPress, onFavoritar }) {
   return (
-    <Pressable style={estilos.cartao} onPress={() => setAberto(!aberto)}>
-      <View style={estilos.topo}>
+    <Card style={estilos.cartao} onPress={onPress} mode="elevated">
+      <Card.Content style={estilos.linha}>
         <Image source={{ uri: pais.bandeira }} style={estilos.bandeira} />
-        <View style={{ flex: 1 }}>
-          <Text style={estilos.nome}>{pais.nome}</Text>
-          <Text style={estilos.regiao}>{pais.regiao}</Text>
-        </View>
-        <Text style={estilos.seta}>{aberto ? '▲' : '▼'}</Text>
-      </View>
-
-      {aberto && (
-        <View style={estilos.detalhes}>
-          <Text style={estilos.linha}>Capital: {pais.capital}</Text>
-          <Text style={estilos.linha}>
-            População: {pais.populacao.toLocaleString('pt-BR')} habitantes
+        <View style={estilos.textos}>
+          <Text variant="titleMedium" style={estilos.nome}>
+            {pais.nome}
+          </Text>
+          <Text variant="bodySmall" style={estilos.regiao}>
+            {pais.regiao}
           </Text>
         </View>
-      )}
-    </Pressable>
+        <IconButton
+          icon={favorito ? 'heart' : 'heart-outline'}
+          iconColor={favorito ? '#ef4444' : '#64748b'}
+          onPress={onFavoritar}
+        />
+      </Card.Content>
+    </Card>
   );
 }
 
 const estilos = StyleSheet.create({
   cartao: {
-    backgroundColor: '#ffffff',
-    borderRadius: 14,
-    padding: 14,
     marginBottom: 10,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
+    backgroundColor: '#ffffff',
   },
-  topo: {
+  linha: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -50,29 +40,14 @@ const estilos = StyleSheet.create({
     marginRight: 12,
     backgroundColor: '#e2e8f0',
   },
+  textos: {
+    flex: 1,
+  },
   nome: {
-    fontSize: 16,
     fontWeight: '700',
     color: '#0f172a',
   },
   regiao: {
-    fontSize: 13,
     color: '#64748b',
-  },
-  seta: {
-    color: '#0ea5e9',
-    fontSize: 14,
-    marginLeft: 8,
-  },
-  detalhes: {
-    marginTop: 12,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-  },
-  linha: {
-    fontSize: 14,
-    color: '#334155',
-    marginBottom: 4,
   },
 });
